@@ -1,9 +1,10 @@
 <template lang="pug">
   main.overflow-hidden
     .row.h-100
-      .col-12.col-md-6.h-100.gradient-background 
-      .col-12.col-md-6.h-100.d-flex.align-items-center.justify-content-center 
-        .inputs-container
+      .col-lg-6.h-100.gradient-background.d-none.d-lg-block.position-relative
+        .white-circle 
+      .col-12.col-lg-6.h-100.d-flex.align-items-center.justify-content-center 
+        .inputs-container(:style="{width: '400px', height: '504px'}")
           h1.authName Sign Up for an Account
           form(@submit.prevent="signup").d-flex.flex-column.align-items-start.justify-content-center.gap-3
             el-input(
@@ -44,8 +45,10 @@
               title="Sign Up"
               width= '100%'
               height= '56px'
+              style="margin: 15px 0"
               )
-                
+            .text-center.w-100 Already have an account? 
+              NuxtLink(:to="{name: 'signin'}").authTriggre  Log In
 </template>
 
 <script setup lang="ts">
@@ -72,19 +75,24 @@ main {
 .gradient-background {
   background: linear-gradient(90deg, #ef3e2c, #e71f63);
 }
+.white-circle {
+  background: linear-gradient(90deg, #ffffff00, #ffffff0f);
+  position: absolute;
+  top: 142px;
+  left: 92px;
+  width: 524px;
+  height: 524px;
+  border-radius: 50%;
+}
 .authName {
   font-weight: 700;
   font-size: 24px;
   color: #000000;
   line-height: 30px;
-  margin-bottom: 30px;
+  margin-bottom: 35px;
 }
 .custom-icon-size >>> .el-input__prefix .el-icon {
   font-size: 24px;
-}
-form {
-  width: 404px;
-  height: 504px;
 }
 form span {
   font-weight: 400;
@@ -101,20 +109,23 @@ form span {
 .custom-checkbox .el-checkbox__inner {
   width: 40px;
   height: 40px;
-  border: 1px solid #dcdfe6; /* Set a default border color */
-  border-radius: 4px; /* Optional: round the corners */
+  border: 1px solid #dcdfe6;
+  border-radius: 4px;
 }
 
-/* Gradient when checked */
 .custom-checkbox .el-checkbox__input.is-checked .el-checkbox__inner {
   background: linear-gradient(90deg, #ef3e2c, #e71f63);
-  border-color: transparent; /* Remove border to show full gradient */
+  border-color: transparent;
+}
+.custom-checkbox .el-checkbox__inner::after {
+  transform: scale(0.7);
+  background-color: white;
 }
 
-/* Ensure the checkmark inside fits */
-.custom-checkbox .el-checkbox__inner::after {
-  transform: scale(0.7); /* Adjust the scale of the checkmark if needed */
-  /* Adjust color to contrast with the gradient if necessary */
-  background-color: white; /* Change checkmark color if needed */
+.authTriggre {
+  background: linear-gradient(90deg, #ef3e2c, #e71f63);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 </style>
