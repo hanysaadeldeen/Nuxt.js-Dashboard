@@ -1,12 +1,12 @@
 <template lang="pug">
-  button(:style="{ width, height,fontWeight: '600',border,borderRadius:borderRadius ,padding:padding}" :class="{withIcon:withIcon, background: backGround, }")
+  button(:style="{ width, height,fontWeight: '600',border,borderRadius:borderRadius ,padding:padding}" :class="{reverse:reverse, withIcon:withIcon, background: backGround, }")
     <slot></slot>
-    span(:style="{color:backGround?'white':'black' }") {{ title }}
+    span(:style="{color:backGround?'white':'black', fontSize:fontsize }") {{ title }}
 </template>
 
 <script setup lang="ts">
 interface Props {
-  title: string;
+  title?: string;
   width?: string;
   height?: string;
   backGround?: boolean;
@@ -14,6 +14,8 @@ interface Props {
   borderRadius?: boolean;
   padding?: boolean;
   withIcon?: boolean;
+  fontsize?: boolean;
+  reverse?: boolean;
 }
 
 defineProps<Props>();
@@ -24,6 +26,10 @@ defineProps<Props>();
   display: flex;
   align-items: center;
   justify-content: space-between;
+  display: reverse;
+}
+.reverse {
+  flex-direction: row-reverse;
 }
 .background {
   background: linear-gradient(90deg, #ef3e2c, #e71f63);

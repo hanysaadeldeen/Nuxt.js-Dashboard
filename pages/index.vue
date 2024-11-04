@@ -1,13 +1,12 @@
 <template lang="pug">
-  main.row.overflow-hidden
+  main.row.overflow-x-hidden.overflow-y-auto.m-0
     sideBar
-    .col-9(:style="{ padding: '32px 0 24px '}")
+    .col-9(:style="{ padding: '32px  24px'}")
       .headerSection.d-flex.justify-content-between.align-items-start 
         div
           h1(:style="{  fontWeight: '600', fontSize: '32px', lineHeight: '38px'}") Users
           p(:style="{color: '#475467',  fontWeight: '400', fontSize: '16px', lineHeight: '24px'}") Users
         .buttons.d-flex(style="gap: 12px")
-          
           BaseButton(
             title="Export"
             width= '105px'
@@ -33,17 +32,28 @@
             template
               el-icon( style="font-weight: bold;" size='15px'  color="white" fill="white")
                 Plus
-
-
+      .controller.border-bottom.w-100.mt-2
+            .links.d-flex.gap-3(:style='{color:"#667085"}')
+              .link(:class="{activeOne: activeLink === 'user'}" :style="{fontSize:'14px', fontWeight:'600',cursor:'pointer' }"  @click="activeLink = 'user'").pb-3.px-1 Active users
+              .link(:class="{activeOne: activeLink === 'products'}" :style="{fontSize:'14px', fontWeight:'600' ,cursor:'pointer'}"  @click="activeLink = 'products'").pb-3.px-1 Blocked users
+      allUsers
 </template>
 
 <script setup lang="ts">
 import { Plus, Download } from "@element-plus/icons-vue";
+const activeLink = ref("user");
 </script>
 
 <style scoped>
 main {
   height: 100vh;
   width: 100vw;
+}
+.activeOne {
+  background: linear-gradient(90deg, #ef3e2c, #e71f63);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  border-bottom: #e71f63 2px solid;
 }
 </style>
