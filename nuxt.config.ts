@@ -3,7 +3,7 @@ export default defineNuxtConfig({
   compatibilityDate: "2024-04-03",
   devtools: { enabled: true },
   css: ["bootstrap/dist/css/bootstrap.min.css"],
-  modules: ["@element-plus/nuxt", "nuxt-graphql-client"],
+  modules: ["@element-plus/nuxt", "nuxt-graphql-client", "@nuxt/image"],
   build: {
     transpile: [],
   },

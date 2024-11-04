@@ -1,8 +1,7 @@
-<template>
-  <button :style="{ width, height }">
-    {{ title }}
+<template lang="pug">
+  button(:style="{ width, height,fontWeight: '600',border,borderRadius:borderRadius ,padding:padding}" :class="{withIcon:withIcon, background: backGround, }")
     <slot></slot>
-  </button>
+    span(:style="{color:backGround?'white':'black' }") {{ title }}
 </template>
 
 <script setup lang="ts">
@@ -10,16 +9,27 @@ interface Props {
   title: string;
   width?: string;
   height?: string;
+  backGround?: boolean;
+  border?: boolean;
+  borderRadius?: boolean;
+  padding?: boolean;
+  withIcon?: boolean;
 }
 
 defineProps<Props>();
 </script>
 
 <style scoped>
-button {
+.withIcon {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.background {
   background: linear-gradient(90deg, #ef3e2c, #e71f63);
-  color: white;
-  border-radius: 50px;
+}
+button {
+  background-color: transparent;
   border: none;
 }
 </style>

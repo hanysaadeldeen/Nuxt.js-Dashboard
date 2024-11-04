@@ -38,6 +38,8 @@
               width= '100%'
               style="margin: 15px 0"
               height= '56px'
+              backGround
+              border-radius= '50px'
               )
             .text-center.w-100 Don’t have an account? 
               NuxtLink(:to="{name: 'signup'}").authTriggre  Sign Up
