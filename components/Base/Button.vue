@@ -1,7 +1,7 @@
 <template lang="pug">
-  button(:style="{ width, height,fontWeight: '600',border,borderRadius:borderRadius ,padding:padding}" :class="{reverse:reverse, withIcon:withIcon, background: backGround, }")
+  button(:style="{background:whiteBackground, width, height,fontWeight: '600',border,borderRadius:borderRadius ,padding:padding}" :class="{reverse:reverse, withIcon:withIcon, background: backGround, }")
     <slot></slot>
-    span(:style="{color:backGround?'white':'black', fontSize:fontsize }") {{ title }}
+    span(:style="{color:backGround?'white':'#344054', fontSize:fontsize }") {{ title }}
 </template>
 
 <script setup lang="ts">
@@ -16,6 +16,7 @@ interface Props {
   withIcon?: boolean;
   fontsize?: boolean;
   reverse?: boolean;
+  whiteBackground?: boolean;
 }
 
 defineProps<Props>();

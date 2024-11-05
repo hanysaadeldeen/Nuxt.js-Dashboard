@@ -1,5 +1,5 @@
 <template lang="pug">
-    .navBar.col-3.d-flex.flex-column.justify-content-between(:style="{ backgroundColor: '#F5F5F5',maxWidth: '270px'}")
+    .navBar.col-3.d-flex.flex-column.justify-content-between(:style="{ backgroundColor: '#F5F5F5',maxWidth: '270px',height:'100vh'}")
       .d-flex.justify-content-start.flex-column.gap-2
         BaseRouteLink(
           title="Home"
