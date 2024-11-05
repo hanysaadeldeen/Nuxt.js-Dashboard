@@ -36,7 +36,9 @@
             .links.d-flex.gap-3(:style='{color:"#667085"}')
               .link(:class="{activeOne: activeLink === 'user'}" :style="{fontSize:'14px', fontWeight:'600',cursor:'pointer' }"  @click="activeLink = 'user'").pb-3.px-1 Active users
               .link(:class="{activeOne: activeLink === 'products'}" :style="{fontSize:'14px', fontWeight:'600' ,cursor:'pointer'}"  @click="activeLink = 'products'").pb-3.px-1 Blocked users
-      allUsers
+      userTabel
+      
+
 </template>
 
 <script setup lang="ts">

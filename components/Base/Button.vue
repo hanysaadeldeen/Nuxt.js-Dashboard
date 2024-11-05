@@ -1,5 +1,5 @@
 <template lang="pug">
-  button(:style="{background:whiteBackground, width, height,fontWeight: '600',border,borderRadius:borderRadius ,padding:padding}" :class="{reverse:reverse, withIcon:withIcon, background: backGround, }")
+  button(:style="{background:whiteBackground, width, height,fontWeight: '600',border,borderRadius:borderRadius ,padding:padding}" :class="{reverse:reverse, withIcon:withIcon,centerTitles:centerTitles, background: backGround, }")
     <slot></slot>
     span(:style="{color:backGround?'white':'#344054', fontSize:fontsize }") {{ title }}
 </template>
@@ -17,6 +17,7 @@ interface Props {
   fontsize?: boolean;
   reverse?: boolean;
   whiteBackground?: boolean;
+  centerTitles?: boolean;
 }
 
 defineProps<Props>();
@@ -28,6 +29,11 @@ defineProps<Props>();
   align-items: center;
   justify-content: space-between;
   display: reverse;
+}
+.centerTitles {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .reverse {
   flex-direction: row-reverse;

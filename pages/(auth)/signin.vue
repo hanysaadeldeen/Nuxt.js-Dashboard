@@ -14,11 +14,11 @@
               size="large"
               placeholder="Email"
               :prefix-icon="Message"
-              class="custom-icon-size"
+              class="custom-icon-size" 
               )
             el-input(
               v-model="userPassword"
-              :style="{ width: '400px', height: '56px' , marginBottom: '15px'}"
+              style="width: 400px; height: 56px ; margin-bottom: 15px"
               size="large"
               type="password"
               placeholder="Please input password"
@@ -26,6 +26,7 @@
               show-password
               class="custom-icon-size"
             )
+
             span Your password must have at least 8 characters
             .d-flex.justify-content-between.align-items-center.my-2.w-100
               .check.d-flex.gap-2.align-items-center
