@@ -1,5 +1,6 @@
 <template lang="pug">
-    .navBar.col-3.d-flex.flex-column.justify-content-between(:style="{ backgroundColor: '#F5F5F5',maxWidth: '270px',height:'100vh'}")
+  .mainSide 
+    .sideBar.d-flex.flex-column.justify-content-between(:style="{ backgroundColor: '#F5F5F5',maxWidth: '270px',height:'100vh'}")
       .d-flex.justify-content-start.flex-column.gap-2
         BaseRouteLink(
           title="Home"
@@ -62,16 +63,16 @@
                 el-icon(size='22px'  color="black" fill="black")
                   Edit 
       .border-top.py-4.px-1
-            .d-flex.align-items-center.gap-2.flex-column.flex-lg-row.w-100.justify-content-between
-                .about.d-flex.align-items-center.gap-3  
-                  NuxtImg(src="/images/two.png" densities="x2"   width="40" height="40" style='border-radius: 50%' alt="My-Image" )
-                  .name.d-none.d-lg-block 
+                .about.d-flex.flex-column.flex-md-row.align-items-center.gap-3.justify-content-between 
+                  //- NuxtImg(src="/images/two.png" densities="x2"   width="40" height="40" style='border-radius: 50%' alt="My-Image" )
+                  img(src="/images/two.png" densities="x2"   width="40" height="40" style='border-radius: 50%' alt="My-Image" )
+                  .name.d-none.d-md-block 
                       h3(:style="{color:'#101828',fontWeight: '600', fontSize: '14px',lineHeight: '20px'}").m-0  Olivia Rhye
                       h3(:style="{color:'#475467',fontWeight: '400', fontSize: '14px',lineHeight: '20px'}").m-0 Super admin
-                NuxtLink(to="/signin" ) 
-                  <svg width="36" height="36" viewBox="0 0 36 36"  xmlns="http://www.w3.org/2000/svg">
-                    <path fill="#667085" d="M15.5 25.5H12.1667C11.7246 25.5 11.3007 25.3244 10.9882 25.0118C10.6756 24.6993 10.5 24.2754 10.5 23.8333V12.1667C10.5 11.7246 10.6756 11.3007 10.9882 10.9882C11.3007 10.6756 11.7246 10.5 12.1667 10.5H15.5M21.3333 22.1667L25.5 18M25.5 18L21.3333 13.8333M25.5 18H15.5" stroke="#667085" stroke-width="1.67" stroke-linecap="round" stroke-linejoin="round"/>
-                  </svg>
+                  NuxtLink(to="/signin" ) 
+                    <svg width="36" height="36" viewBox="0 0 36 36"  xmlns="http://www.w3.org/2000/svg">
+                      <path fill="#667085" d="M15.5 25.5H12.1667C11.7246 25.5 11.3007 25.3244 10.9882 25.0118C10.6756 24.6993 10.5 24.2754 10.5 23.8333V12.1667C10.5 11.7246 10.6756 11.3007 10.9882 10.9882C11.3007 10.6756 11.7246 10.5 12.1667 10.5H15.5M21.3333 22.1667L25.5 18M25.5 18L21.3333 13.8333M25.5 18H15.5" stroke="#667085" stroke-width="1.67" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
 </template>
 
 <script setup lang="ts">
@@ -96,11 +97,15 @@ const activeLink = ref("user");
   background: linear-gradient(90deg, #ef3e2c, #e71f63);
   color: #fff;
 }
-.navBar {
+.mainSide {
+  position: relative;
+}
+.sideBar {
+  position: fixed;
   padding: 95px 25px 0;
 }
 @media (max-width: 767.98px) {
-  .navBar {
+  .sideBar {
     max-width: fit-content;
     padding: 80px 10px 0;
   }

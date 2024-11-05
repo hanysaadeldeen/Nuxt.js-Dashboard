@@ -1,15 +1,13 @@
 <template lang="pug">
-  main.row.h-100.overflow-x-hidden.overflow-y-auto.m-0
-    sideBar
-    .col-9.m-0.p-0(style='background:#FCFCFD')
+    div(style=" background: #FCFCFD ")
       div(style='background:#FEF7F7 ; padding: 32px ')
-          .headerSection.d-flex.justify-content-between.align-items-end 
+          .headerSection.d-flex.flex-column.flex-sm-row.justify-content-between.align-items-sm-end.align-items-start 
             div
               h1(:style="{  fontWeight: '600', fontSize: '32px', lineHeight: '38px'}") Users
               p(:style="{color: '#475467',  fontWeight: '400', fontSize: '16px', lineHeight: '24px'}").m-0 Users 
                 span(style='color: #343330 ; margin:0 4px') >
                 |user profile
-            .buttons.d-flex(style="gap: 8px")
+            .buttons.d-flex(style="gap: 8px").mt-3.mt-sm-0.flex-wrap
                 BaseButton(
                   title="Unblock"
                   width= '113px'
@@ -52,9 +50,9 @@
                       <path d="M9.99996 5.00004C10.4602 5.00004 10.8333 4.62694 10.8333 4.16671C10.8333 3.70647 10.4602 3.33337 9.99996 3.33337C9.53972 3.33337 9.16663 3.70647 9.16663 4.16671C9.16663 4.62694 9.53972 5.00004 9.99996 5.00004Z" stroke="#858589" stroke-width="1.66667" stroke-linecap="round" stroke-linejoin="round"/>
                       <path d="M9.99996 16.6667C10.4602 16.6667 10.8333 16.2936 10.8333 15.8334C10.8333 15.3731 10.4602 15 9.99996 15C9.53972 15 9.16663 15.3731 9.16663 15.8334C9.16663 16.2936 9.53972 16.6667 9.99996 16.6667Z" stroke="#858589" stroke-width="1.66667" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>
-          .userInfo.d-flex.justify-content-start.align-items-center.mt-4.gap-4
+          .userInfo.d-flex.justify-content-start.align-items-center.mt-4.gap-4.flex-column.flex-sm-row
                     img( src="/images/one.jpg" alt="user-image" style="width: 101px; height: 101px; border-radius: 50%")
-                    .info
+                    .info.d-flex.flex-column.align-items-center.align-items-sm-start
                       .d-flex.gap-2.align-items-center.mb-2
                         svg(width="18" height="18" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg")
                           path(d="M9 0.875C7.39303 0.875 5.82214 1.35152 4.48599 2.24431C3.14984 3.1371 2.10844 4.40605 1.49348 5.8907C0.878517 7.37535 0.717615 9.00901 1.03112 10.5851C1.34462 12.1612 2.11846 13.6089 3.25476 14.7452C4.39106 15.8815 5.8388 16.6554 7.41489 16.9689C8.99099 17.2824 10.6247 17.1215 12.1093 16.5065C13.594 15.8916 14.8629 14.8502 15.7557 13.514C16.6485 12.1779 17.125 10.607 17.125 9C17.1227 6.84581 16.266 4.78051 14.7427 3.25727C13.2195 1.73403 11.1542 0.877275 9 0.875ZM15.875 9C15.8766 10.6074 15.3121 12.1641 14.2805 13.3969L4.60312 3.71875C5.60703 2.88358 6.82804 2.35159 8.12326 2.18506C9.41849 2.01853 10.7344 2.22433 11.9169 2.77838C13.0994 3.33243 14.0997 4.21182 14.8006 5.31363C15.5016 6.41545 15.8743 7.69411 15.875 9ZM2.125 9C2.1234 7.39255 2.68793 5.83588 3.71953 4.60313L13.3969 14.2812C12.393 15.1164 11.172 15.6484 9.87674 15.8149C8.58151 15.9815 7.26565 15.7757 6.08312 15.2216C4.9006 14.6676 3.90033 13.7882 3.19937 12.6864C2.4984 11.5846 2.12575 10.3059 2.125 9Z" fill="#B71A2A")
@@ -63,8 +61,8 @@
           .controller.border-bottom.w-100.mt-4
                 .links.d-flex.gap-3(:style='{color:"#667085"}')
                   .link(:class="{activeOne: activeLink === 'user'}" :style="{fontSize:'14px', fontWeight:'600',cursor:'pointer' }"  @click="activeLink = 'user'").pb-3.px-1 Account
-      .accountInformation(style= 'padding:0 32px; margin-top:24px ').d-flex.justify-content-between.align-items-start.gap-4
-                    div(style="background:#FFFFFF; padding: 32px 24px ;border-radius:8px;width: 90%")
+      .accountInformation(style= 'padding:0 32px 30px; margin-top:24px ').d-flex.flex-column.flex-md-row.justify-content-between.align-items-start.gap-4
+                    div(style="background:#FFFFFF; padding: 32px 24px ;border-radius:8px;width: 100%")
                       h1(style='color:#101828;font-size: 20px;font-weight: 600;line-height: 24px;margin-bottom: 25px ')  Account info
                       div
                         .name.border-bottom.m-0.pb-3

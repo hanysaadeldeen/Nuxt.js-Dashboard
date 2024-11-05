@@ -1,7 +1,5 @@
 <template lang="pug">
-  main.row.overflow-x-hidden.overflow-y-auto.m-0
-    sideBar
-    .col-9(style="padding: 32px  24px; background: #FCFCFD ")
+    div(style="padding: 32px  24px; background: #FCFCFD ")
         .headerSection.d-flex.justify-content-between.align-items-end 
           div
             h1(:style="{  fontWeight: '600', fontSize: '32px', lineHeight: '38px'}") Users
@@ -9,11 +7,11 @@
               span(style='color: #343330 ; margin:0 4px') >
               |Add Users
         .infoSection
-            div.d-flex.justify-content-between.align-items-end(style="margin: 32px 0 30px; padding-bottom:30px").border-bottom
+            div.d-flex.justify-content-between.align-items-end(style="margin: 32px 0 30px; padding-bottom:30px").border-bottom.flex-wrap.gap-3
               .about
                 h1(:style="{color:'#101828',  fontWeight: '600', fontSize: '18px', lineHeight: '21px'}").mb-3 Add user account
                 p(:style="{color: '#858589',  fontWeight: '500', fontSize: '14px', lineHeight: '16px'}").m-0 Add photo and personal details here 
-              .buttons.d-flex(style="gap: 12px")
+              .buttons.d-flex(style="gap: 12px").flex-wrap.mt-2.mt-sm-0
                   BaseButton(
                     title="Reset"
                     width= '80px'

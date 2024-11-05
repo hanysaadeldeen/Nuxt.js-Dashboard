@@ -1,17 +1,17 @@
 <template lang="pug">
-    .headerSection.d-flex.justify-content-between.align-items-center.mt-4.mb-3
+    .headerSection.d-flex.flex-column.flex-lg-row.justify-content-between.align-items-center.mt-4.mb-3.gap-3
         el-input(
             v-model="search"
-            :style="{maxWidth:' 400px',borderRadius: '8px', height: '44px'}"
+            :style="{maxWidth:'400px', borderRadius: '8px', height: '44px'}"
             placeholder="Search"
             :prefix-icon="Search"
             size="large"
           )    
-        .d-flex.align-items-center.gap-3
+        .d-flex.align-items-center.gap-3.flex-column.flex-sm-row
           el-date-picker(
             class="custom-date-picker"
             v-model="DatePicker"
-            :style="{maxWidth:' 400px',borderRadius: '8px', height: '44px',cursor: 'pointer'}"
+            :style="{maxWidth:'236px', height: '44px',cursor: 'pointer'}"
             size="large"
             type="dates"
             placeholder="Pick one or more dates")
@@ -57,7 +57,7 @@
             //-     </svg>
             //-   .col-1.d-flex.align-items-center
             //-     h1(:style="{fontSize:'12px', fontWeight:'500',lineHeight:'18px',color:'#475467',cursor:'pointer'}" @click='checkedAllName=!checkedAllName').m-0 Created at
-        el-table( :data="tableData" :style="{width: '100%'}")
+        el-table(:data="tableData" :style="{width: '100%'}"  @row-click="handleRowClick" class="clickable-rows")
           el-table-column( type="selection" width="30" )
           el-table-column( label="Name" width="216")
               template(#default="scope")
@@ -87,8 +87,9 @@
                   path(d="M10 10.8334C10.4602 10.8334 10.8333 10.4603 10.8333 10C10.8333 9.5398 10.4602 9.16671 10 9.16671C9.53976 9.16671 9.16666 9.5398 9.16666 10C9.16666 10.4603 9.53976 10.8334 10 10.8334Z" stroke="#858589" stroke-width="1.66667" stroke-linecap="round" stroke-linejoin="round")
                   path(d="M10 5.00004C10.4602 5.00004 10.8333 4.62694 10.8333 4.16671C10.8333 3.70647 10.4602 3.33337 10 3.33337C9.53976 3.33337 9.16666 3.70647 9.16666 4.16671C9.16666 4.62694 9.53976 5.00004 10 5.00004Z" stroke="#858589" stroke-width="1.66667" stroke-linecap="round" stroke-linejoin="round")
                   path(d="M10 16.6667C10.4602 16.6667 10.8333 16.2936 10.8333 15.8334C10.8333 15.3731 10.4602 15 10 15C9.53976 15 9.16666 15.3731 9.16666 15.8334C9.16666 16.2936 9.53976 16.6667 10 16.6667Z" stroke="#858589" stroke-width="1.66667" stroke-linecap="round" stroke-linejoin="round")
-        .pagination.d-flex.justify-content-between.align-items-center(style="padding:12px 24px 15px ")
+        .pagination.d-flex.justify-content-center.justify-content-lg-between.align-items-center(style="padding:12px 24px 15px ")
           BaseButton(
+            class="d-none d-lg-flex"
             title="Previous"
             width= '112px'
             height= '36px'
@@ -111,6 +112,7 @@
               v-model:current-page="currentPage"
             )
           BaseButton(
+            class="d-none d-lg-flex"
             title="Next"
             width= '87px'
             height= '36px'
@@ -137,6 +139,13 @@ const DatePicker = ref("");
 const checkedAllName = ref(false);
 const currentPage = ref(5);
 
+const router = useRouter();
+const handleRowClick = (row: any) => {
+  const userName = row.id;
+  console.log(userName);
+  router.push(`/users/${userName}`);
+};
+
 interface User {
   date: string;
   name: string;
@@ -145,9 +154,11 @@ interface User {
   created: string;
   email: string;
   Username: string;
+  id: number;
 }
 const tableData: User[] = [
   {
+    id: 1,
     date: "2016-05-04",
     email: "olivia@untitledui.com",
     name: "Aleyna Kutzner",
@@ -157,6 +168,7 @@ const tableData: User[] = [
     Username: "@oli267",
   },
   {
+    id: 2,
     date: "2016-05-03",
     name: "Helen Jacobi",
     email: "olivia@untitledui.com",
@@ -166,6 +178,7 @@ const tableData: User[] = [
     Username: "@oli267",
   },
   {
+    id: 5,
     date: "2016-05-02",
     name: "Brandon Deckert",
     mobile: "+20 123 456 789",
@@ -175,6 +188,7 @@ const tableData: User[] = [
     Username: "@oli267",
   },
   {
+    id: 4,
     date: "2016-05-01",
     name: "Margie Smith",
     mobile: "+20 123 456 789",
@@ -187,6 +201,10 @@ const tableData: User[] = [
 </script>
 
 <style scoped>
+.clickable-rows .el-table__row {
+  cursor: pointer;
+}
+
 .el-pagination .el-pager li {
   background-color: #f5f5f5;
 }

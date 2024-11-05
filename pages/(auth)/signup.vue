@@ -4,12 +4,12 @@
       .col-lg-6.h-100.gradient-background.d-none.d-lg-block.position-relative
         .white-circle 
       .col-12.col-lg-6.h-100.d-flex.align-items-center.justify-content-center 
-        .inputs-container(:style="{width: '400px', height: '504px'}")
+        .inputs-container(:style="{maxWidth: '400px',width:'100%', height: '504px'}").px-3.px-md-0
           h1.authName Sign Up for an Account
-          form(@submit.prevent="signup").d-flex.flex-column.align-items-start.justify-content-center.gap-3
+          form(@submit.prevent="signup")
             el-input(
               v-model="userName"
-              :style="{ width: '400px', height: '56px' }"
+              style='width: 100%; height: 56px; margin-bottom: 15px'
               size="large"
               placeholder="Username"
               :prefix-icon="User"
@@ -17,7 +17,7 @@
               )
             el-input(
               v-model="userEmail"
-              :style="{width: '400px', height: '56px'}"
+              style='width: 100%; height: 56px; margin-bottom: 15px'
               size="large"
               placeholder="Email"
               :prefix-icon="Message"
@@ -25,7 +25,7 @@
               )
             el-input(
               v-model="userPassword"
-              :style="{ width: '400px', height: '56px' }"
+              style='width: 100%; height: 56px; margin-bottom: 15px'
               size="large"
               type="password"
               placeholder="Please input password"
@@ -67,6 +67,10 @@ const signup = () => {
   console.log(userEmail.value);
   console.log(checked.value);
 };
+
+definePageMeta({
+  layout: false,
+});
 </script>
 
 <style scoped>
@@ -92,6 +96,12 @@ main {
   color: #000000;
   line-height: 30px;
   margin-bottom: 35px;
+}
+@media (max-width: 768px) {
+  .authName {
+    font-size: 20px;
+    line-height: 20px;
+  }
 }
 .custom-icon-size >>> .el-input__prefix .el-icon {
   font-size: 24px;

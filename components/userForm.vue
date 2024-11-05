@@ -1,59 +1,59 @@
 <template lang="pug">
     .d-flex.flex-column.gap-4
         .row
-            .col-3 
+            .col-12.col-sm-3 
                 h1(style='color:#000000;font-size: 14px;font-weight: 600;line-height: 20px')  Name
-            .col-6.d-flex.gap-4
+            .col-12.col-md-7.d-flex.gap-2.gap-md-3.flex-column.flex-md-row
                 el-input(
                     v-model="firstName"
-                    style="width: 244px; font-size: 16px;"
+                    class="input-responsive"
                     size="large"
                     placeholder="First Name"
                     )
                 el-input(
                     v-model="lastName"
-                    style="width: 244px ; font-size: 16px;"
+                    class="input-responsive"
                     size="large"
                     placeholder="last Name"
                     )
         .row
-            .col-3 
+            .col-12.col-md-3 
                 h1(style='color:#000000;font-size: 14px;font-weight: 600;line-height: 20px')  Email address
-            .col-6.d-flex.gap-3
+            .col-12.col-md-7.d-flex.gap-2.gap-md-3.flex-column.flex-md-row
                 el-input(
-                    v-model="email"
-                    style="width: 512px; font-size: 16px;"
+                    v-model="email"         
+                    class="input-responsive2"
                     type="email"
                     size="large"
                     placeholder="Your Email "
                     )
         .row
-            .col-3 
+            .col-12.col-md-3 
                 h1(style='color:#000000;font-size: 14px;font-weight: 600;line-height: 20px')  Password
-            .col-6.d-flex.gap-3
+            .col-12.col-md-7.d-flex.gap-2.gap-md-3.flex-column.flex-md-row
                 el-input(
                     v-model="password"
-                    style="width: 512px; font-size: 16px;"
+                    class="input-responsive2"
                     size="large"
                     placeholder="---"
                     type="password"
                     show-password
                     )
         .row
-            .col-3 
+            .col-12.col-md-3 
                 h1(style='color:#000000;font-size: 14px;font-weight: 600;line-height: 20px')  Role
-            .col-6.d-flex.gap-3
+            .col-12.col-md-7.d-flex.gap-2.gap-md-3.flex-column.flex-md-row
                 el-input(
                     v-model="role"
-                    style="width: 512px; font-size: 16px;"
+                    class="input-responsive2"
                     size="large"
                     placeholder="Role"
                     )
                 
         .row
-          .col-3
+          .col-12.col-md-3
             h1(style="color: #000000; font-size: 14px; font-weight: 600; line-height: 20px") Photo
-          .col-6.d-flex.gap-4.align-items-start
+          .col-12.col-md-7.d-flex.gap-4.align-items-center.align-items-md-start.flex-wrap.justify-content-start
             div(v-if="imageSrc" class="image-preview")
               img(:src="imageSrc" alt="Preview")
               button(@click="removeImage" class="delete-icon")
@@ -120,6 +120,12 @@ const removeImage = () => {
 </script>
 
 <style scoped>
+.input-responsive,
+.input-responsive2 {
+  flex-basis: 0;
+  flex-grow: 1;
+}
+
 .image-upload-box {
   position: relative;
   border: 1px solid #ddd;
@@ -129,6 +135,21 @@ const removeImage = () => {
   width: 428px;
   height: 104px;
   cursor: pointer;
+}
+
+@media (min-width: 768px) {
+  .input-responsive {
+    flex-basis: auto;
+    max-width: 248px;
+  }
+  .input-responsive2 {
+    flex-basis: auto;
+    max-width: 512px;
+  }
+  .image-upload-box {
+    flex-basis: auto;
+    max-width: 428px;
+  }
 }
 
 .file-input {
