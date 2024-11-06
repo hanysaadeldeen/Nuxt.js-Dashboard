@@ -10,13 +10,13 @@ interface Props {
   width?: string;
   height?: string;
   backGround?: boolean;
-  border?: boolean;
-  borderRadius?: boolean;
-  padding?: boolean;
+  border?: string;
+  borderRadius?: string;
+  padding?: string;
   withIcon?: boolean;
-  fontsize?: boolean;
+  fontsize?: string;
   reverse?: boolean;
-  whiteBackground?: boolean;
+  whiteBackground?: string;
   centerTitles?: boolean;
 }
 

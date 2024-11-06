@@ -6,8 +6,26 @@ export default defineNuxtConfig({
     "bootstrap/dist/css/bootstrap.min.css",
     "bootstrap-icons/font/bootstrap-icons.css",
   ],
+  plugins: ["~/plugins/supabase.js"],
+  modules: [
+    "@vee-validate/nuxt",
+    "@element-plus/nuxt",
+    "nuxt-graphql-client",
+    "@nuxt/image",
+  ],
 
-  modules: ["@element-plus/nuxt", "nuxt-graphql-client", "@nuxt/image"],
+  veeValidate: {
+    // disable or enable auto imports
+    autoImports: true,
+    // Use different names for components
+    componentNames: {
+      Form: "VeeForm",
+      Field: "VeeField",
+      FieldArray: "VeeFieldArray",
+      ErrorMessage: "VeeErrorMessage",
+    },
+  },
+
   build: {
     transpile: [],
   },

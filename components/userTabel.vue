@@ -37,32 +37,12 @@
               <path d="M10 5.00004C10.4602 5.00004 10.8333 4.62694 10.8333 4.16671C10.8333 3.70647 10.4602 3.33337 10 3.33337C9.53976 3.33337 9.16666 3.70647 9.16666 4.16671C9.16666 4.62694 9.53976 5.00004 10 5.00004Z" stroke="#98A2B3" stroke-width="1.66667" stroke-linecap="round" stroke-linejoin="round"/>
               <path d="M10 16.6667C10.4602 16.6667 10.8333 16.2936 10.8333 15.8334C10.8333 15.3731 10.4602 15 10 15C9.53976 15 9.16666 15.3731 9.16666 15.8334C9.16666 16.2936 9.53976 16.6667 10 16.6667Z" stroke="#98A2B3" stroke-width="1.66667" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
-        .currentUsers
-            //- .row(:style="{background: '#F9FAFB',padding: '0 16px' }")
-            //-   .col-3.d-flex.align-items-center.gap-2
-            //-     <el-checkbox v-model="checkedAllName" size="large" />
-            //-     h1(:style="{fontSize:'12px', fontWeight:'500',lineHeight:'18px',color:'#475467',cursor:'pointer'}" @click='checkedAllName=!checkedAllName').m-0 All users
-            //-   .col-2.d-flex.align-items-center
-            //-     h1(:style="{fontSize:'12px', fontWeight:'500',lineHeight:'18px',color:'#475467',cursor:'pointer'}" @click='checkedAllName=!checkedAllName').m-0 Email
-            //-   .col-1.d-flex.align-items-center.justify-content-center
-            //-     h1(:style="{fontSize:'12px', fontWeight:'500',lineHeight:'18px',color:'#475467',cursor:'pointer'}" @click='checkedAllName=!checkedAllName').m-0 Username
-            //-   .col-2.d-flex.align-items-center.justify-content-center
-            //-     h1(:style="{fontSize:'12px', fontWeight:'500',lineHeight:'18px',color:'#475467',cursor:'pointer'}" @click='checkedAllName=!checkedAllName').m-0 Mobile number
-            //-   .col-1.d-flex.align-items-center.justify-content-center
-            //-     h1(:style="{fontSize:'12px', fontWeight:'500',lineHeight:'18px',color:'#475467',cursor:'pointer'}" @click='checkedAllName=!checkedAllName').m-0 Region
-            //-   .col-2.d-flex.align-items-center.justify-content-center.gap-2
-            //-     h1(:style="{fontSize:'12px', fontWeight:'500',lineHeight:'18px',color:'#475467',cursor:'pointer'}" @click='checkedAllName=!checkedAllName').m-0 Created at
-            //-     <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-            //-       <path d="M6 1.33337V10.6667M6 10.6667L10.6667 6.00004M6 10.6667L1.33334 6.00004" stroke="#475467" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"/>
-            //-     </svg>
-            //-   .col-1.d-flex.align-items-center
-            //-     h1(:style="{fontSize:'12px', fontWeight:'500',lineHeight:'18px',color:'#475467',cursor:'pointer'}" @click='checkedAllName=!checkedAllName').m-0 Created at
         el-table(:data="tableData" :style="{width: '100%'}"  @row-click="handleRowClick" class="clickable-rows")
           el-table-column( type="selection" width="30" )
           el-table-column( label="Name" width="216")
               template(#default="scope")
                 div(class="user-info")
-                  img(src="/images/two.png" alt="User Image" class="user-image")
+                  img(:src="scope.row.avatar" alt="User Image" class="user-image")
                   span  {{ scope.row.name}}
           el-table-column(property="email" label="Email" width="189") 
           el-table-column(
@@ -70,9 +50,9 @@
             label="Username"
             width="107"
             )
-          el-table-column(property="mobile" label="Mobile number" width="162")
-          el-table-column(property="region" label="Region"  width="127")
-          el-table-column(property="created" label="Created at" width="133")
+          el-table-column(property="mobile" label="Mobile number" width="162"  align="center")
+          el-table-column(property="region" label="Region"  width="127"  align="center")
+          el-table-column(property="creationAt" label="Created at" width="133" align="center")
             template(#header="scope")
               .d-flex.justify-content-center.gap-2.align-items-center
                 span Created at
@@ -138,6 +118,17 @@ const search = ref("");
 const DatePicker = ref("");
 const checkedAllName = ref(false);
 const currentPage = ref(5);
+interface User {
+  id: string;
+  name: string;
+  mobile: string;
+  region: string;
+  creationAt: any;
+  email: string;
+  Username: string;
+  avatar: string;
+}
+const tableData: User[] = [];
 
 const router = useRouter();
 const handleRowClick = (row: any) => {
@@ -146,58 +137,27 @@ const handleRowClick = (row: any) => {
   router.push(`/users/${userName}`);
 };
 
-interface User {
-  date: string;
-  name: string;
-  mobile: string;
-  region: string;
-  created: string;
-  email: string;
-  Username: string;
-  id: number;
+const { data, error, status } = await useAsyncGql({
+  operation: "GetUsers",
+  variables: { limit: 4 },
+});
+
+if (data && data.value) {
+  const updatedUsers = data.value.users.map((user) => ({
+    ...user,
+    mobile: "01012345678",
+    region: "Cairo",
+    Username: "@oli267",
+    creationAt: new Date(user.creationAt).toLocaleDateString("en-GB", {
+      year: "numeric",
+      month: "2-digit",
+    }),
+  }));
+  tableData.push(...updatedUsers);
+  console.log(updatedUsers);
+} else {
+  console.error("Error or no data:", error, status);
 }
-const tableData: User[] = [
-  {
-    id: 1,
-    date: "2016-05-04",
-    email: "olivia@untitledui.com",
-    name: "Aleyna Kutzner",
-    mobile: "+20 123 456 789",
-    region: "egypt",
-    created: "Jan 13, 2022",
-    Username: "@oli267",
-  },
-  {
-    id: 2,
-    date: "2016-05-03",
-    name: "Helen Jacobi",
-    email: "olivia@untitledui.com",
-    mobile: "+20 123 456 789",
-    region: "egypt",
-    created: "Jan 13, 2022",
-    Username: "@oli267",
-  },
-  {
-    id: 5,
-    date: "2016-05-02",
-    name: "Brandon Deckert",
-    mobile: "+20 123 456 789",
-    region: "egypt",
-    email: "olivia@untitledui.com",
-    created: "Jan 13, 2022",
-    Username: "@oli267",
-  },
-  {
-    id: 4,
-    date: "2016-05-01",
-    name: "Margie Smith",
-    mobile: "+20 123 456 789",
-    region: "egypt",
-    email: "olivia@untitledui.com",
-    created: "Jan 13, 2022",
-    Username: "@oli267",
-  },
-];
 </script>
 
 <style scoped>

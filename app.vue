@@ -12,7 +12,14 @@
 import { useRoute } from "vue-router";
 
 const route = useRoute();
-const isAuthPage = route.name === "signin" || route.name === "signup";
+const isAuthPage = ref(route.name === "signin" || route.name === "signup");
+
+watch(
+  () => route.name,
+  (newRoute) => {
+    isAuthPage.value = newRoute === "signin" || newRoute === "signup";
+  }
+);
 </script>
 
 <style scoped>

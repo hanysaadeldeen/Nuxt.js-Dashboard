@@ -94,6 +94,7 @@
                 padding='10px 16px'
                 fontsize='14px'
                 centerTitles
+                @click="handleSubmit"
               )        
 </template>
 
@@ -101,21 +102,73 @@
 import { ref } from "vue";
 const firstName = ref("");
 const lastName = ref("");
+const fullname = ref(firstName.value + " " + lastName.value);
 const email = ref("");
 const password = ref("");
 const role = ref("");
-const imageSrc = ref<string | null>(null);
 
+const imageSrc = ref<string | null>(null);
+const avatarUrl = ref<string>("");
+const pendingImage = ref<boolean>(false);
+
+const { $supabase } = useNuxtApp();
+const uploadImage = async (file: File) => {
+  const fileName = `${Date.now()}_${file.name}`;
+
+  pendingImage.value = true;
+  const { data, error } = await $supabase.storage
+    .from("Nuxt-Task")
+    .upload(fileName, file);
+  pendingImage.value = false;
+
+  if (error) {
+    console.error("Error uploading file:", error.message);
+  } else {
+    console.log("File uploaded successfully:", data);
+
+    const { publicUrl } = $supabase.storage
+      .from("Nuxt-Task")
+      .getPublicUrl(fileName).data;
+    avatarUrl.avlue = publicUrl;
+  }
+};
 const previewImage = (event: Event) => {
+  console.log("here");
+
   const target = event.target as HTMLInputElement;
   const file = target.files ? target.files[0] : null;
   if (file) {
     imageSrc.value = URL.createObjectURL(file);
+    uploadImage(file);
   }
 };
 
 const removeImage = () => {
   imageSrc.value = null;
+};
+
+const handleSubmit = async () => {
+  // avatar must be a URL address
+  const fullname = firstName.value + " " + lastName.value;
+  console.log(avatarUrl.value);
+
+  // const { data, error } = await useAsyncGql({
+  //   operation: "AddUser",
+  //   variables: {
+  //     name: fullname,
+  //     email: email.value,
+  //     password: password.value,
+  //     avatar: avatarUrl.value,
+  //   },
+  // });
+  // if (data) {
+  //   console.log("User added successfully:", data);
+  //   firstName.value = "";
+  //   lastName.value = "";
+  //   email.value = "";
+  //   password.value = "";
+  //   imageSrc.value = null;
+  // }
 };
 </script>
 
