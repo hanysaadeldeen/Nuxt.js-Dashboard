@@ -1,0 +1,7 @@
+mutation UpdateUser($id: ID!, $name: String!) {
+  updateUser(id: $id, changes: { name: $name }) {
+    id
+    name
+    avatar
+  }
+}

@@ -1,0 +1,20 @@
+query GetUsers($limit: Float) {
+  users(limit: $limit) {
+    id
+    name
+    avatar
+    role
+    email
+    creationAt
+  }
+}
+
+query GetSpecificUser($id: ID!) {
+  user(id: $id) {
+    id
+    name
+    avatar
+    role
+    email
+  }
+}

@@ -48,6 +48,7 @@
               style="margin: 15px 0"
               backGround
               border-radius= '50px'
+              @click="signup"
               )
             .text-center.w-100 Already have an account? 
               NuxtLink(:to="{name: 'signin'}").authTriggre  Log In
@@ -59,13 +60,41 @@ import { User, Lock, Message } from "@element-plus/icons-vue";
 const userName = ref("");
 const userPassword = ref("");
 const userEmail = ref("");
-const checked = ref("");
+const checked = ref(false);
+const router = useRouter();
 
-const signup = () => {
-  console.log(userName.value);
-  console.log(userPassword.value);
-  console.log(userEmail.value);
-  console.log(checked.value);
+const signup = async () => {
+  if (checked.value === true) {
+    const { data, error, status } = await useAsyncGql({
+      operation: "SignUp",
+      variables: {
+        name: userName.value,
+        email: userEmail.value,
+        password: userPassword.value,
+        avatar: "https://i.imgur.com/LDOO4Qs.jpg",
+        role: "admin",
+      },
+    });
+    if (error.value) {
+      console.log(
+        "Error:",
+        error.value.cause.gqlErrors[0].extensions.originalError.message
+      );
+    }
+    if (data) {
+      console.log(status.value);
+      console.log(data.value.addUser);
+
+      // useCookie("token").value = data.value.login.access_token;
+      // useCookie("refresh_token").value = data.value.login.refresh_token;
+      console.log(data.value);
+      userEmail.value = "";
+      userPassword.value = "";
+      userName.value = "";
+      checked.value = false;
+      // router.push("/signin");
+    }
+  }
 };
 
 definePageMeta({

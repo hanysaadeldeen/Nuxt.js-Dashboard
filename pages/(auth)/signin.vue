@@ -40,6 +40,7 @@
               height= '56px'
               backGround
               border-radius= '50px'
+              @click="signIn"
               )
             .text-center.w-100 Don’t have an account? 
               NuxtLink(:to="{name: 'signup'}").authTriggre  Sign Up
@@ -50,12 +51,32 @@ import { User, Lock, Message } from "@element-plus/icons-vue";
 
 const userPassword = ref("");
 const userEmail = ref("");
-const checked = ref("");
+const router = useRouter();
+const checked = ref(false);
 
-const signup = () => {
-  console.log(userPassword.value);
-  console.log(userEmail.value);
-  console.log(checked.value);
+const signIn = async () => {
+  if (checked.value === true) {
+    const { data, error } = await useAsyncGql({
+      operation: "Signin",
+      variables: {
+        email: userEmail.value,
+        password: userPassword.value,
+      },
+    });
+    if (error.value) {
+      console.log(
+        "Error:",
+        error.value.cause.gqlErrors[0].extensions.originalError.message
+      );
+    }
+    if (data) {
+      useCookie("token").value = data.value.login.access_token;
+      useCookie("refresh_token").value = data.value.login.refresh_token;
+      userEmail.value = "";
+      userPassword.value = "";
+      router.push("/");
+    }
+  }
 };
 definePageMeta({
   layout: false,

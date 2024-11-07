@@ -148,27 +148,26 @@ const removeImage = () => {
 };
 
 const handleSubmit = async () => {
-  // avatar must be a URL address
   const fullname = firstName.value + " " + lastName.value;
   console.log(avatarUrl.value);
-
-  // const { data, error } = await useAsyncGql({
-  //   operation: "AddUser",
-  //   variables: {
-  //     name: fullname,
-  //     email: email.value,
-  //     password: password.value,
-  //     avatar: avatarUrl.value,
-  //   },
-  // });
-  // if (data) {
-  //   console.log("User added successfully:", data);
-  //   firstName.value = "";
-  //   lastName.value = "";
-  //   email.value = "";
-  //   password.value = "";
-  //   imageSrc.value = null;
-  // }
+  const { data, error } = await useAsyncGql({
+    operation: "AddUser",
+    variables: {
+      name: fullname,
+      email: email.value,
+      password: password.value,
+      avatar: avatarUrl.value,
+      role: "customer",
+    },
+  });
+  if (data) {
+    console.log("User added successfully:", data);
+    firstName.value = "";
+    lastName.value = "";
+    email.value = "";
+    password.value = "";
+    imageSrc.value = null;
+  }
 };
 </script>
 

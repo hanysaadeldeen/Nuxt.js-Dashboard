@@ -85,24 +85,72 @@
                         fontsize='14px'
                         withIcon
                         whiteBackground='white'
+                        @click="showForm = true"
                       )
                         template             
                           span(style='margin:4px 4px 0 0')
                             el-icon 
                               EditPen 
+                    Teleport(to="body")
+                      div(v-if="showForm" class="modal-overlay z-3 ")
+                        div(class="modal-content mx-4")
+                          h3.mb-3 Edit Username
+                          el-input(
+                            v-model="username"
+                            style='width: 100%; height: 40px; margin-bottom: 15px'
+                            size="large"
+                            placeholder="Enter new username"
+                            :prefix-icon="User"
+                            class="custom-icon-size"
+                            )
+                          .buttons.d-flex(style="gap: 12px").flex-wrap.mt-2.mt-sm-0
+                                BaseButton(
+                                  title="UPDATE"
+                                  width= '80px'
+                                  height= '40px'
+                                  backGround
+                                  borderRadius= '8px'
+                                  padding='10px 16px'
+                                  fontsize='14px'
+                                  centerTitles
+                                  @click="updateUsername"
+                                )
+                                BaseButton(
+                                  title="CLOSE"
+                                  width= '80px'
+                                  height= '40px'
+                                  border='1px solid #D0D5DD'
+                                  borderRadius= '8px'
+                                  padding='10px 16px'
+                                  fontsize='14px'
+                                  centerTitles
+                                  @click="showForm = false"
+                                )                        
+                        
 
 </template>
 
 <script setup lang="ts">
 import { Delete, EditPen } from "@element-plus/icons-vue";
 const activeLink = ref("user");
-
+const showForm = ref(false);
+const username = ref("");
 const { params } = useRoute();
 
-const { data, error, status } = await useAsyncGql({
+const { data, error, status, refresh } = await useAsyncGql({
   operation: "GetSpecificUser",
   variables: { id: params.userId },
 });
+
+const updateUsername = async () => {
+  const { data, error } = await useAsyncGql({
+    operation: "UpdateUser",
+    variables: { id: params.userId, name: username.value },
+  });
+  showForm.value = false;
+  console.log(data.value);
+  refresh();
+};
 </script>
 
 <style scoped>
@@ -112,5 +160,26 @@ const { data, error, status } = await useAsyncGql({
   background-clip: text;
   color: transparent;
   border-bottom: #e71f63 2px solid;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.051);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-content {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  max-width: 400px;
+  width: 100%;
 }
 </style>

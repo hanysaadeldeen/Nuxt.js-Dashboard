@@ -1,0 +1,23 @@
+mutation SignUp(
+  $name: String!
+  $email: String!
+  $password: String!
+  $role: Role!
+  $avatar: String!
+) {
+  addUser(
+    data: {
+      name: $name
+      email: $email
+      password: $password
+      role: $role
+      avatar: $avatar
+    }
+  ) {
+    id
+    name
+    email
+    role
+    avatar
+  }
+}
