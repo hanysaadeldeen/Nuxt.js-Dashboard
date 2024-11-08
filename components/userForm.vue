@@ -129,12 +129,10 @@ const uploadImage = async (file: File) => {
     const { publicUrl } = $supabase.storage
       .from("Nuxt-Task")
       .getPublicUrl(fileName).data;
-    avatarUrl.avlue = publicUrl;
+    avatarUrl.value = publicUrl;
   }
 };
 const previewImage = (event: Event) => {
-  console.log("here");
-
   const target = event.target as HTMLInputElement;
   const file = target.files ? target.files[0] : null;
   if (file) {
@@ -149,7 +147,6 @@ const removeImage = () => {
 
 const handleSubmit = async () => {
   const fullname = firstName.value + " " + lastName.value;
-  console.log(avatarUrl.value);
   const { data, error } = await useAsyncGql({
     operation: "AddUser",
     variables: {
@@ -166,7 +163,7 @@ const handleSubmit = async () => {
     lastName.value = "";
     email.value = "";
     password.value = "";
-    imageSrc.value = null;
+    imageSrc.value = "customer";
   }
 };
 </script>
