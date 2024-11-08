@@ -35,8 +35,6 @@
             .accountInfo
               h1(style='color:#101828;font-size: 20px;font-weight: 600;line-height: 24px;margin-bottom: 25px ')  Account info
               userForm
-
-
 </template>
 
 <script setup lang="ts">
