@@ -43,6 +43,16 @@
 <script setup lang="ts">
 import { Plus, Download } from "@element-plus/icons-vue";
 const activeLink = ref("user");
+
+definePageMeta({
+  middleware: ["auth"],
+});
+
+const isLoggedIn = () => {
+  return !!useCookie("token").value;
+};
+
+isLoggedIn();
 </script>
 
 <style scoped>

@@ -137,6 +137,9 @@ const showForm = ref(false);
 const username = ref("");
 const { params } = useRoute();
 
+definePageMeta({
+  middleware: ["auth"],
+});
 const { data, error, status, refresh } = await useAsyncGql({
   operation: "GetSpecificUser",
   variables: { id: params.userId },
