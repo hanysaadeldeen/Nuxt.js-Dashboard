@@ -62,6 +62,7 @@
 <script setup lang="ts">
 import { User, Lock, Message, Warning } from "@element-plus/icons-vue";
 import { useRouter } from "vue-router";
+
 import { useForm, useField } from "vee-validate";
 import * as yup from "yup";
 import { ElNotification } from "element-plus";
@@ -130,7 +131,6 @@ const signIn = handleSubmit(async () => {
   if (error.value) {
     const errorMessage =
       error.value.cause.gqlErrors[0].extensions.originalError.message;
-    console.log(errorMessage);
     throwError(errorMessage);
   }
   if (data.value) {

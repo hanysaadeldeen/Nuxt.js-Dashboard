@@ -1,54 +1,92 @@
 <template lang="pug">
-    .d-flex.flex-column.gap-4
+    form(@submit.prevent="addUser")
+      .d-flex.flex-column.gap-3
         .row
             .col-12.col-sm-3 
                 h1(style='color:#000000;font-size: 14px;font-weight: 600;line-height: 20px')  Name
             .col-12.col-md-7.d-flex.gap-2.gap-md-3.flex-column.flex-md-row
-                el-input(
-                    v-model="firstName"
-                    class="input-responsive"
-                    size="large"
-                    placeholder="First Name"
-                    )
-                el-input(
-                    v-model="lastName"
-                    class="input-responsive"
-                    size="large"
-                    placeholder="last Name"
-                    )
+                div(class="input-responsive")
+                  el-input(
+                      v-model="userFirstName"
+                      v-bind='firstNameField'
+                      
+                      size="large"
+                      placeholder="First Name"
+                      )
+                  span.error(v-if="firstNameErrors").mt-2  
+                    <el-icon>
+                      <Warning />
+                    </el-icon>
+                    span.errorMessage {{ firstNameErrors}} 
+                div(class="input-responsive")
+                  el-input(
+                      v-model="userLastName"
+                      v-bind='lastNameField'
+                      size="large"
+                      placeholder="last Name"
+                      )
+                  span.error(v-if="lastNameErrors").mt-2  
+                    <el-icon>
+                      <Warning />
+                    </el-icon> 
+                    span.errorMessage {{ lastNameErrors}} 
         .row
             .col-12.col-md-3 
                 h1(style='color:#000000;font-size: 14px;font-weight: 600;line-height: 20px')  Email address
-            .col-12.col-md-7.d-flex.gap-2.gap-md-3.flex-column.flex-md-row
+            .col-12.col-md-7.d-flex.flex-column
                 el-input(
-                    v-model="email"         
+                    v-model="userEmail"      
+                    v-bind='emailField'   
                     class="input-responsive2"
                     type="email"
                     size="large"
                     placeholder="Your Email "
                     )
+                span.error(v-if="emailErrors").mt-2    
+                  <el-icon>
+                    <Warning />
+                  </el-icon>
+                  span.errorMessage {{ emailErrors}} 
         .row
             .col-12.col-md-3 
                 h1(style='color:#000000;font-size: 14px;font-weight: 600;line-height: 20px')  Password
-            .col-12.col-md-7.d-flex.gap-2.gap-md-3.flex-column.flex-md-row
+            .col-12.col-md-7.d-flex.flex-column
                 el-input(
-                    v-model="password"
+                    v-model="userPassword"
+                    v-bind='passwordField'   
                     class="input-responsive2"
                     size="large"
                     placeholder="---"
                     type="password"
                     show-password
                     )
+                span.error(v-if="passwordErrors").mt-2
+                  <el-icon>
+                    <Warning />
+                  </el-icon>
+                  span.errorMessage {{ passwordErrors}}
         .row
             .col-12.col-md-3 
                 h1(style='color:#000000;font-size: 14px;font-weight: 600;line-height: 20px')  Role
-            .col-12.col-md-7.d-flex.gap-2.gap-md-3.flex-column.flex-md-row
-                el-input(
-                    v-model="role"
+            .col-12.col-md-7.d-flex.flex-column
+                el-select(
+                    v-model="userRole"
+                    v-bind='roleField'   
+                    placeholder="Role"
                     class="input-responsive2"
                     size="large"
-                    placeholder="Role"
+                  )
+                    el-option(
+                      v-for="item in options"
+                      :key="item.value"
+                      :label="item.label"
+                      :value="item.value"
                     )
+                span.error(v-if="roleErrors").mt-2 
+                  <el-icon>
+                    <Warning />
+                  </el-icon>
+                  span.errorMessage {{ roleErrors}}
                 
         .row
           .col-12.col-md-3
@@ -67,7 +105,7 @@
                   </defs>
                 </svg>
             div(class="image-upload-box")
-              input(type="file" @change="previewImage" accept="image/*" class="file-input")
+              input(type="file" @change="previewImage"  accept="image/*" class="file-input")
               .upload-icon
                 svg(width="20" height="18" viewBox="0 0 20 18" fill="none" xmlns="http://www.w3.org/2000/svg")
                   path(d="M13.3333 12.3334L9.99997 9.00003M9.99997 9.00003L6.66663 12.3334M9.99997 9.00003V16.5M16.9916 14.325C17.8044 13.8819 18.4465 13.1808 18.8165 12.3322C19.1866 11.4837 19.2635 10.5361 19.0351 9.63894C18.8068 8.74182 18.2862 7.94629 17.5555 7.3779C16.8248 6.80951 15.9257 6.50064 15 6.50003H13.95C13.6977 5.5244 13.2276 4.61864 12.5749 3.85085C11.9222 3.08307 11.104 2.47324 10.1817 2.0672C9.25943 1.66116 8.25709 1.46949 7.25006 1.5066C6.24304 1.5437 5.25752 1.80861 4.36761 2.28142C3.47771 2.75422 2.70656 3.42261 2.11215 4.23635C1.51774 5.05008 1.11554 5.98797 0.935783 6.97952C0.756025 7.97107 0.803388 8.99047 1.07431 9.96108C1.34523 10.9317 1.83267 11.8282 2.49997 12.5834" stroke="#475467" stroke-width="1.66667" stroke-linecap="round" stroke-linejoin="round")
@@ -84,33 +122,116 @@
                 padding='10px 16px'
                 fontsize='14px'
                 centerTitles
+                @click="resetInputs"
               )
               BaseButton(
                 title="Add"
                 width= '80px'
                 height= '40px'
-                backGround
+                :backGround="isFormValid"
+                :GrayBackgroundColor="!isFormValid"
                 borderRadius= '8px'
                 padding='10px 16px'
                 fontsize='14px'
                 centerTitles
-                @click="handleSubmit"
+                @click="addUser"
               )        
 </template>
 
 <script setup lang="ts">
 import { ref } from "vue";
-const firstName = ref("");
-const lastName = ref("");
-const fullname = ref(firstName.value + " " + lastName.value);
-const email = ref("");
-const password = ref("");
-const role = ref("");
+import { Warning } from "@element-plus/icons-vue";
+import { ElNotification } from "element-plus";
 
 const imageSrc = ref<string | null>(null);
 const avatarUrl = ref<string>("");
 const pendingImage = ref<boolean>(false);
 
+import { useForm, useField } from "vee-validate";
+import * as yup from "yup";
+
+const router = useRouter();
+const checked = ref(false);
+
+const schema = yup.object({
+  userFirstName: yup
+    .string()
+    .min(3, "First Name must have at least 3 characters")
+    .required("First Name is required"),
+  userLastName: yup
+    .string()
+    .min(3, "Last Name must have at least 3 characters")
+    .required("Last Name is required"),
+  userEmail: yup.string().email("Invalid email").required("Email is required"),
+  userPassword: yup
+    .string()
+    .min(8, "Password must have at least 8 characters")
+    .required("Password is required"),
+  userRole: yup.string().required("Role is required"),
+});
+
+const { handleSubmit } = useForm({
+  validationSchema: schema,
+});
+
+const {
+  value: userFirstName,
+  errorMessage: firstNameErrors,
+  ...firstNameField
+} = useField("userFirstName");
+
+const {
+  value: userLastName,
+  errorMessage: lastNameErrors,
+  ...lastNameField
+} = useField("userLastName");
+
+const {
+  value: userEmail,
+  errorMessage: emailErrors,
+  ...emailField
+} = useField("userEmail");
+
+const {
+  value: userPassword,
+  errorMessage: passwordErrors,
+  ...passwordField
+} = useField("userPassword");
+
+const {
+  value: userRole,
+  errorMessage: roleErrors,
+  ...roleField
+} = useField("userRole");
+
+const isFormValid = computed(() => {
+  return (
+    !firstNameErrors.value &&
+    !lastNameErrors.value &&
+    !emailErrors.value &&
+    !passwordErrors.value &&
+    !roleErrors.value &&
+    userFirstName.value &&
+    userLastName.value &&
+    userEmail.value &&
+    userPassword.value &&
+    userRole.value &&
+    imageSrc.value !== null
+  );
+});
+
+const options = [
+  {
+    value: "admin",
+    label: "Admin",
+  },
+  {
+    value: "customer",
+    label: "Customer",
+  },
+];
+
+// upload the image to supabase
 const { $supabase } = useNuxtApp();
 const uploadImage = async (file: File) => {
   const fileName = `${Date.now()}_${file.name}`;
@@ -123,15 +244,16 @@ const uploadImage = async (file: File) => {
 
   if (error) {
     console.error("Error uploading file:", error.message);
+    return;
   } else {
-    console.log("File uploaded successfully:", data);
-
     const { publicUrl } = $supabase.storage
       .from("Nuxt-Task")
       .getPublicUrl(fileName).data;
     avatarUrl.value = publicUrl;
   }
 };
+
+// get the Image from input and call the uploadImage function
 const previewImage = (event: Event) => {
   const target = event.target as HTMLInputElement;
   const file = target.files ? target.files[0] : null;
@@ -140,31 +262,78 @@ const previewImage = (event: Event) => {
     uploadImage(file);
   }
 };
-
+// remove the image
 const removeImage = () => {
   imageSrc.value = null;
 };
 
-const handleSubmit = async () => {
-  const fullname = firstName.value + " " + lastName.value;
+const throwError = (msg: string) => {
+  ElNotification({
+    title: "Error",
+    message: msg,
+    type: "error",
+    duration: 2000,
+  });
+};
+const throwSuccess = () => {
+  ElNotification({
+    title: "Success",
+    message: "User added successfully",
+    type: "success",
+    duration: 2000,
+  });
+};
+
+const addUser = handleSubmit(async () => {
+  const fullname = userFirstName.value + " " + userLastName.value;
+  console.log(fullname);
+  console.log(userEmail.value);
+  console.log(userPassword.value);
+  console.log(avatarUrl.value);
+  console.log(userRole.value);
+
   const { data, error } = await useAsyncGql({
     operation: "AddUser",
     variables: {
       name: fullname,
-      email: email.value,
-      password: password.value,
+      email: userEmail.value,
+      password: userPassword.value,
       avatar: avatarUrl.value,
-      role: "customer",
+      role: userRole.value,
     },
   });
-  if (data) {
-    console.log("User added successfully:", data);
-    firstName.value = "";
-    lastName.value = "";
-    email.value = "";
-    password.value = "";
-    imageSrc.value = "customer";
+
+  if (error.value) {
+    const errorMessage =
+      error.value.cause.gqlErrors[0].extensions.originalError.message[0];
+    throwError(errorMessage);
   }
+  if (data.value) {
+    throwSuccess();
+    userFirstName.value = "";
+    userLastName.value = "";
+    userEmail.value = "";
+    userPassword.value = "";
+    avatarUrl.value = "";
+    imageSrc.value = null;
+  }
+});
+
+const resetInputs = () => {
+  // if (
+  //   userFirstName.value != undefined &&
+  //   userLastName.value !== undefined &&
+  //   userEmail.value !== undefined &&
+  //   userPassword.value !== undefined &&
+  //   imageSrc.value !== null
+  // ) {
+  // userFirstName.value = "";
+  // userLastName.value = "";
+  // userEmail.value = "";
+  // userPassword.value = "";
+  // avatarUrl.value = "";
+  // imageSrc.value = null;
+  // }
 };
 </script>
 
@@ -254,5 +423,15 @@ const handleSubmit = async () => {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+.error {
+  color: red;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.errorMessage {
+  color: red;
+  font-size: 12px;
 }
 </style>

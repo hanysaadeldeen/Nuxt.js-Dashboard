@@ -15,7 +15,6 @@ export default defineNuxtConfig({
   ],
 
   veeValidate: {
-    // disable or enable auto imports
     autoImports: true,
   },
 
@@ -24,7 +23,9 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     public: {
-      GQL_HOST: "https://api.escuelajs.co/graphql",
+      GQL_HOST: process.env.GQL_HOST,
+      supabaseUrl: process.env.NUXT_SUPABASE_URL,
+      supabaseKey: process.env.NUXT_SUPABASE_KEY,
     },
   },
 });

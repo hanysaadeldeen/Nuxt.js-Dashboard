@@ -126,8 +126,6 @@
                                   centerTitles
                                   @click="showForm = false"
                                 )                        
-                        
-
 </template>
 
 <script setup lang="ts">
@@ -151,7 +149,6 @@ const updateUsername = async () => {
     variables: { id: params.userId, name: username.value },
   });
   showForm.value = false;
-  console.log(data.value);
   refresh();
 };
 </script>

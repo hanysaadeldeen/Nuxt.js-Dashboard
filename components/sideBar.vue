@@ -66,10 +66,10 @@
                 .about.d-flex.flex-column.flex-md-row.align-items-center.gap-3.justify-content-between 
                   //- NuxtImg(src="/images/two.png" densities="x2"   width="40" height="40" style='border-radius: 50%' alt="My-Image" )
                   img(src="/images/two.png" densities="x2"   width="40" height="40" style='border-radius: 50%' alt="My-Image" )
-                  .name.d-none.d-md-block 
+                  .name.d-none.d-md-block
                       h3(:style="{color:'#101828',fontWeight: '600', fontSize: '14px',lineHeight: '20px'}").m-0  Olivia Rhye
                       h3(:style="{color:'#475467',fontWeight: '400', fontSize: '14px',lineHeight: '20px'}").m-0 Super admin
-                  NuxtLink(to="/signin" ) 
+                  div(@click='logOut()' style='cursor: pointer;')
                     <svg width="36" height="36" viewBox="0 0 36 36"  xmlns="http://www.w3.org/2000/svg">
                       <path fill="#667085" d="M15.5 25.5H12.1667C11.7246 25.5 11.3007 25.3244 10.9882 25.0118C10.6756 24.6993 10.5 24.2754 10.5 23.8333V12.1667C10.5 11.7246 10.6756 11.3007 10.9882 10.9882C11.3007 10.6756 11.7246 10.5 12.1667 10.5H15.5M21.3333 22.1667L25.5 18M25.5 18L21.3333 13.8333M25.5 18H15.5" stroke="#667085" stroke-width="1.67" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>
@@ -84,6 +84,13 @@ import {
   Edit,
 } from "@element-plus/icons-vue";
 const activeLink = ref("user");
+const router = useRouter();
+
+const logOut = () => {
+  useCookie("token").value = null;
+  useCookie("refresh_token").value = null;
+  router.push("/signin");
+};
 </script>
 
 <style scoped>

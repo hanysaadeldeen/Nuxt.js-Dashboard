@@ -133,7 +133,6 @@ const tableData: User[] = [];
 const router = useRouter();
 const handleRowClick = (row: any) => {
   const userName = row.id;
-  console.log(userName);
   router.push(`/users/${userName}`);
 };
 

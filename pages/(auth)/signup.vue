@@ -163,7 +163,6 @@ const signUp = handleSubmit(async () => {
     }
 
     if (data.value) {
-      console.log("Signup successful:", data.value);
       throwSuccess();
       checked.value = false;
       router.push({ name: "signin" });
