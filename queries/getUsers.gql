@@ -1,5 +1,5 @@
-query GetUsers($limit: Float) {
-  users(limit: $limit) {
+query GetUsers {
+  users {
     id
     name
     avatar

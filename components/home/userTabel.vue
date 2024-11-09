@@ -36,12 +36,12 @@
               <path d="M10 5.00004C10.4602 5.00004 10.8333 4.62694 10.8333 4.16671C10.8333 3.70647 10.4602 3.33337 10 3.33337C9.53976 3.33337 9.16666 3.70647 9.16666 4.16671C9.16666 4.62694 9.53976 5.00004 10 5.00004Z" stroke="#98A2B3" stroke-width="1.66667" stroke-linecap="round" stroke-linejoin="round"/>
               <path d="M10 16.6667C10.4602 16.6667 10.8333 16.2936 10.8333 15.8334C10.8333 15.3731 10.4602 15 10 15C9.53976 15 9.16666 15.3731 9.16666 15.8334C9.16666 16.2936 9.53976 16.6667 10 16.6667Z" stroke="#98A2B3" stroke-width="1.66667" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
-        el-table(:data="tableData" :style="{width: '100%'}"  @row-click="handleRowClick" class="clickable-rows")
+        el-table( :data="tableData" :style="{width: '100%'}"  @row-click="handleRowClick" class="clickable-rows")
           el-table-column( type="selection" width="30" )
           el-table-column( label="Name" width="216")
               template(#default="scope")
                 div(class="user-info")
-                  img(:src="scope.row.avatar" alt="User Image" class="user-image")
+                  NuxtImg(:src="scope.row.avatar" alt="User Image" class="user-image")
                   span  {{ scope.row.name}}
           el-table-column(property="email" label="Email" width="189") 
           el-table-column(
@@ -77,7 +77,7 @@
             padding='10px 16px'
             fontsize='14px'
             withIcon 
-            @click="currentPage--"
+            @click="currentPage >1 && currentPage--"
             )          
                 <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M12.8334 7.00008H1.16669M1.16669 7.00008L7.00002 12.8334M1.16669 7.00008L7.00002 1.16675" stroke="#344054" stroke-width="1.67" stroke-linecap="round" stroke-linejoin="round"/>
@@ -86,7 +86,7 @@
               :page-size="20"
               :pager-count="7"
               layout="pager"
-              :total="200"
+              :total="500"
               v-model:current-page="currentPage"
             )
           BaseButton(
@@ -105,16 +105,22 @@
                 <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M1.16667 7.00008H12.8333M12.8333 7.00008L7 1.16675M12.8333 7.00008L7 12.8334" stroke="#344054" stroke-width="1.67" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
-
-    
 </template>
 
 <script setup lang="ts">
 import { Search } from "@element-plus/icons-vue";
+const route = useRoute();
+const router = useRouter();
 const search = ref("");
 const DatePicker = ref("");
 const checkedAllName = ref(false);
-const currentPage = ref(5);
+
+const currentPage = ref<number>(parseInt(route.query.page as string) || 1);
+
+const itemsPerPage = 4;
+const allData = ref([]);
+const tableData = ref([]);
+
 interface User {
   id: string;
   name: string;
@@ -125,9 +131,7 @@ interface User {
   Username: string;
   avatar: string;
 }
-const tableData: User[] = [];
 
-const router = useRouter();
 const handleRowClick = (row: any) => {
   const userName = row.id;
   router.push(`/users/${userName}`);
@@ -135,11 +139,10 @@ const handleRowClick = (row: any) => {
 
 const { data, error, status } = await useAsyncGql({
   operation: "GetUsers",
-  variables: { limit: 4 },
 });
 
 if (data && data.value) {
-  const updatedUsers = data.value.users.map((user) => ({
+  allData.value = data.value.users.map((user) => ({
     ...user,
     mobile: "01012345678",
     region: "Cairo",
@@ -149,11 +152,30 @@ if (data && data.value) {
       month: "2-digit",
     }),
   }));
-  tableData.push(...updatedUsers);
-  console.log(updatedUsers);
+
+  updateTableData();
 } else {
   console.error("Error or no data:", error, status);
 }
+
+function updateTableData() {
+  const start = (currentPage.value - 1) * itemsPerPage;
+  const end = start + itemsPerPage;
+  tableData.value = allData.value.slice(start, end);
+}
+// watch(currentPage, updateTableData);
+watch(currentPage, (newPage) => {
+  updateTableData();
+  router.push({ query: { ...route.query, page: newPage.toString() } });
+});
+
+// Watch the route query to update `currentPage` when the `page` query parameter changes
+watch(
+  () => route.query.page,
+  (page) => {
+    if (page) currentPage.value = parseInt(page as string);
+  }
+);
 </script>
 
 <style scoped>
