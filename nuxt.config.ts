@@ -60,9 +60,4 @@ export default defineNuxtConfig({
     },
   },
 
-  ssr: true, // تمكين الـ SSR
-
-  app: {
-    baseURL: "/", // ضبط قاعدة التوجيه بشكل صحيح
-  },
 });
