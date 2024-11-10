@@ -36,7 +36,7 @@
               <path d="M10 5.00004C10.4602 5.00004 10.8333 4.62694 10.8333 4.16671C10.8333 3.70647 10.4602 3.33337 10 3.33337C9.53976 3.33337 9.16666 3.70647 9.16666 4.16671C9.16666 4.62694 9.53976 5.00004 10 5.00004Z" stroke="#98A2B3" stroke-width="1.66667" stroke-linecap="round" stroke-linejoin="round"/>
               <path d="M10 16.6667C10.4602 16.6667 10.8333 16.2936 10.8333 15.8334C10.8333 15.3731 10.4602 15 10 15C9.53976 15 9.16666 15.3731 9.16666 15.8334C9.16666 16.2936 9.53976 16.6667 10 16.6667Z" stroke="#98A2B3" stroke-width="1.66667" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
-        el-table( :data="tableData" :style="{width: '100%'}"  @row-click="handleRowClick" class="clickable-rows")
+        el-table(:data="tableData" :style="{width: '100%'}"  @row-click="handleRowClick" class="clickable-rows")
           el-table-column( type="selection" width="30" )
           el-table-column( label="Name" width="216")
               template(#default="scope")
@@ -83,10 +83,10 @@
                   <path d="M12.8334 7.00008H1.16669M1.16669 7.00008L7.00002 12.8334M1.16669 7.00008L7.00002 1.16675" stroke="#344054" stroke-width="1.67" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
           el-pagination(
-              :page-size="20"
+              :page-size="4"
               :pager-count="7"
               layout="pager"
-              :total="500"
+              :total="total"
               v-model:current-page="currentPage"
             )
           BaseButton(
@@ -114,6 +114,7 @@ const router = useRouter();
 const search = ref("");
 const DatePicker = ref("");
 const checkedAllName = ref(false);
+const total = ref(0);
 
 const currentPage = ref<number>(parseInt(route.query.page as string) || 1);
 
@@ -152,24 +153,35 @@ if (data && data.value) {
       month: "2-digit",
     }),
   }));
-
+  total.value = data.value.users.length;
   updateTableData();
 } else {
   console.error("Error or no data:", error, status);
 }
+
+watch(search, () => {
+  const trimmedSearch = search.value.trim();
+  const filteredData = allData.value.filter((user) =>
+    user.name.toLowerCase().includes(trimmedSearch.toLowerCase())
+  );
+  total.value = filteredData.length;
+  tableData.value = filteredData.slice(
+    (currentPage.value - 1) * itemsPerPage,
+    currentPage.value * itemsPerPage
+  );
+});
 
 function updateTableData() {
   const start = (currentPage.value - 1) * itemsPerPage;
   const end = start + itemsPerPage;
   tableData.value = allData.value.slice(start, end);
 }
-// watch(currentPage, updateTableData);
+
 watch(currentPage, (newPage) => {
   updateTableData();
   router.push({ query: { ...route.query, page: newPage.toString() } });
 });
 
-// Watch the route query to update `currentPage` when the `page` query parameter changes
 watch(
   () => route.query.page,
   (page) => {

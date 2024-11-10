@@ -87,7 +87,6 @@
                     <Warning />
                   </el-icon>
                   span.errorMessage {{ roleErrors}}
-                
         .row
           .col-12.col-md-3
             h1(style="color: #000000; font-size: 14px; font-weight: 600; line-height: 20px") Photo
@@ -122,7 +121,6 @@
                 padding='10px 16px'
                 fontsize='14px'
                 centerTitles
-                @click="resetInputs"
               )
               BaseButton(
                 title="Add"
@@ -231,7 +229,6 @@ const options = [
   },
 ];
 
-// upload the image to supabase
 const { $supabase } = useNuxtApp();
 const uploadImage = async (file: File) => {
   const fileName = `${Date.now()}_${file.name}`;
@@ -253,7 +250,6 @@ const uploadImage = async (file: File) => {
   }
 };
 
-// get the Image from input and call the uploadImage function
 const previewImage = (event: Event) => {
   const target = event.target as HTMLInputElement;
   const file = target.files ? target.files[0] : null;
@@ -262,7 +258,7 @@ const previewImage = (event: Event) => {
     uploadImage(file);
   }
 };
-// remove the image
+
 const removeImage = () => {
   imageSrc.value = null;
 };
@@ -286,12 +282,6 @@ const throwSuccess = () => {
 
 const addUser = handleSubmit(async () => {
   const fullname = userFirstName.value + " " + userLastName.value;
-  console.log(fullname);
-  console.log(userEmail.value);
-  console.log(userPassword.value);
-  console.log(avatarUrl.value);
-  console.log(userRole.value);
-
   const { data, error } = await useAsyncGql({
     operation: "AddUser",
     variables: {
@@ -310,6 +300,7 @@ const addUser = handleSubmit(async () => {
   }
   if (data.value) {
     throwSuccess();
+    router.push("/");
     userFirstName.value = "";
     userLastName.value = "";
     userEmail.value = "";
@@ -318,23 +309,6 @@ const addUser = handleSubmit(async () => {
     imageSrc.value = null;
   }
 });
-
-const resetInputs = () => {
-  // if (
-  //   userFirstName.value != undefined &&
-  //   userLastName.value !== undefined &&
-  //   userEmail.value !== undefined &&
-  //   userPassword.value !== undefined &&
-  //   imageSrc.value !== null
-  // ) {
-  // userFirstName.value = "";
-  // userLastName.value = "";
-  // userEmail.value = "";
-  // userPassword.value = "";
-  // avatarUrl.value = "";
-  // imageSrc.value = null;
-  // }
-};
 </script>
 
 <style scoped>

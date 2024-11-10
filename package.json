@@ -27,6 +27,7 @@
   },
   "devDependencies": {
     "@element-plus/nuxt": "^1.1.0",
-    "@types/yup": "^0.32.0"
+    "@types/yup": "^0.32.0",
+    "sass": "^1.80.6"
   }
 }

@@ -1,7 +1,7 @@
 <template lang="pug">
     div(style=" background: #FCFCFD ")
       div(style='background:#FEF7F7 ; padding: 32px ')
-          userHeaderSection
+          userHeaderSection(:userName="data.user.name")
           .userInfo.d-flex.justify-content-start.align-items-center.mt-4.gap-4.flex-column.flex-sm-row
                     img( :src="data.user.avatar" alt="user-image" style="width: 101px; height: 101px; border-radius: 50%")
                     .info.d-flex.flex-column.align-items-center.align-items-sm-start

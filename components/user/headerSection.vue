@@ -3,8 +3,8 @@
             div
               h1(:style="{  fontWeight: '600', fontSize: '32px', lineHeight: '38px'}") Users
               p(:style="{color: '#475467',  fontWeight: '400', fontSize: '16px', lineHeight: '24px'}").m-0 Users 
-                span(style='color: #343330 ; margin:0 4px') >
-                |user profile
+                span(style='color: #343330 ; margin:0 4px') > {{userName}}
+                |profile
             .buttons.d-flex(style="gap: 8px").mt-3.mt-sm-0.flex-wrap
                 BaseButton(
                   title="Unblock"
@@ -28,6 +28,7 @@
                   padding='10px 16px'
                   fontsize='14px'
                   withIcon
+                  @click="deleteUser()"
                 )           
                     span(style='margin:4px 4px 0 0')
                       el-icon
@@ -49,4 +50,44 @@
 
 <script setup lang="ts">
 import { Delete } from "@element-plus/icons-vue";
+
+defineProps<{ userName: string }>();
+
+const { params } = useRoute();
+const router = useRouter();
+
+const throwError = (msg: string) => {
+  ElNotification({
+    title: "Error",
+    message: msg,
+    type: "error",
+    duration: 2000,
+  });
+};
+const throwSuccess = () => {
+  ElNotification({
+    title: "Success",
+    message: "User deleted ",
+    type: "success",
+    duration: 2000,
+  });
+};
+
+const deleteUser = async () => {
+  const { data, error } = await useAsyncGql({
+    operation: "DeleteUser",
+    variables: {
+      id: params.userId,
+    },
+  });
+
+  if (data.value) {
+    throwSuccess();
+    router.push("/");
+  }
+
+  if (error) {
+    throwError(error.value.cause.gqlErrors[0].message);
+  }
+};
 </script>
