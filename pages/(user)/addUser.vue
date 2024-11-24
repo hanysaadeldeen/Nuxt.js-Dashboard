@@ -38,8 +38,30 @@
 </template>
 
 <script setup lang="ts">
+// import { useSchemaOrg } from "nuxt-schema-org";
+
 definePageMeta({
   middleware: ["auth"],
+});
+
+useSchemaOrg({
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "@id": "https://dietncheat.com/#website",
+  name: "Diet And Cheat",
+  url: "https://dietncheat.com",
+  description:
+    "Transformation steps. Your Baby Steps Today Shape your Tomorrow for Your Weight Goal...",
+  publisher: {
+    "@type": "Organization",
+    name: "Diet And Cheat",
+    logo: { "@type": "ImageObject", url: "https://dietncheat.com/logo.png" },
+  },
+  potentialAction: {
+    "@type": "SearchAction",
+    target: "https://dietncheat.com/?s={search_term_string}",
+    "query-input": "required name=search_term_string",
+  },
 });
 </script>
 

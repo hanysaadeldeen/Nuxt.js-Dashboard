@@ -20,14 +20,19 @@
 const activeLink = ref("user");
 const { params } = useRoute();
 
-definePageMeta({
-  middleware: ["auth"],
-});
 const { data, error, status, refresh } = await useAsyncGql({
   operation: "GetSpecificUser",
   variables: { id: params.userId },
 });
 
+definePageMeta({
+  ogImage: {
+    component: "default",
+    props: {
+      title: "Default Title",
+    },
+  },
+});
 const refreshPage = () => {
   refresh();
 };

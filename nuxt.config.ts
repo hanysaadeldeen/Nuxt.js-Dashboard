@@ -8,12 +8,45 @@ export default defineNuxtConfig({
   ],
   plugins: ["~/plugins/supabase.js"],
   modules: [
-    "@vee-validate/nuxt",
+    "nuxt-link-checker",
+    "@nuxtjs/robots",
     "@element-plus/nuxt",
     "nuxt-graphql-client",
+    "@vee-validate/nuxt",
     "@nuxt/image",
+    "@nuxtjs/sitemap",
+    "nuxt-schema-org",
+    "nuxt-og-image",
   ],
+  robots: {
+    rules: [
+      {
+        UserAgent: "googlebot",
+        Disallow: ["/admin", "/*.pdf", "/*.jpg", "*?q=*"],
+        Allow: ["/admin/login", "*?a=*"],
+      },
+      {
+        UserAgent: "*",
+        Allow: "/",
+      },
+    ],
+    sitemap: "https://your-site.com/sitemap.xml",
+  },
 
+  sitemap: {
+    hostname: "http://localhost:3000",
+    routes: async () => {
+      return ["/", "/signin", "/signup", "/adduser", "/users/:userId"];
+    },
+  },
+
+  schemaOrg: { canonicalHost: "http://localhost:3000", defaultLanguage: "en" },
+
+  ogImage: {
+    host: "http://localhost:3000",
+  },
+
+  linkChecker: { verbose: true, report: ["html", "markdown"] },
   veeValidate: {
     autoImports: true,
   },
